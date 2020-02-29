@@ -15,6 +15,8 @@
  */
 package com.aegis.mybatis.xmlless.config.paginition
 
+import com.baomidou.mybatisplus.core.override.MybatisMapperMethod
+import com.baomidou.mybatisplus.core.override.MybatisMapperProxy
 import org.apache.ibatis.binding.MapperMethod
 import org.apache.ibatis.binding.MapperProxy
 import org.apache.ibatis.lang.UsesJava7
@@ -36,8 +38,8 @@ import java.lang.reflect.Modifier
  */
 class XmlLessPageMapperProxy<T>(private val sqlSession: SqlSession,
                                 private val mapperInterface: Class<T>,
-                                private val methodCache: MutableMap<Method, MapperMethod>)
-  : MapperProxy<T>(sqlSession, mapperInterface, methodCache) {
+                                private val methodCache: MutableMap<Method, MybatisMapperMethod>)
+  : MybatisMapperProxy<T>(sqlSession, mapperInterface, methodCache) {
 
   companion object {
     private const val serialVersionUID = -6424540398559729838L
@@ -63,8 +65,8 @@ class XmlLessPageMapperProxy<T>(private val sqlSession: SqlSession,
     return mapperMethod.execute(sqlSession, args)
   }
 
-  private fun cachedMapperMethod(method: Method): MapperMethod {
-    var mapperMethod: MapperMethod? = methodCache[method]
+  private fun cachedMapperMethod(method: Method): MybatisMapperMethod {
+    var mapperMethod: MybatisMapperMethod? = methodCache[method]
     if (mapperMethod == null) {
       mapperMethod = XmlLessPageMapperMethod(mapperInterface, method, sqlSession.configuration)
       methodCache[method] = mapperMethod

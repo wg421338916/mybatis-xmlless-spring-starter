@@ -2,6 +2,7 @@ package com.aegis.mybatis.xmlless.config.paginition
 
 import com.aegis.mybatis.xmlless.methods.XmlLessMethods
 import com.baomidou.mybatisplus.core.metadata.IPage
+import com.baomidou.mybatisplus.core.override.MybatisMapperMethod
 import org.apache.ibatis.binding.MapperMethod
 import org.apache.ibatis.mapping.SqlCommandType
 import org.apache.ibatis.session.Configuration
@@ -22,7 +23,7 @@ import java.lang.reflect.Method
 class XmlLessPageMapperMethod(mapperInterface: Class<*>,
                               requestMethod: Method,
                               config: Configuration) :
-    MapperMethod(mapperInterface, requestMethod, config) {
+    MybatisMapperMethod(mapperInterface, requestMethod, config) {
 
   private val command = MapperMethod.SqlCommand(config, mapperInterface, requestMethod)
   private val method = MapperMethod.MethodSignature(config, mapperInterface, requestMethod)
